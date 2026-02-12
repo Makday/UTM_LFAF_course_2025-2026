@@ -20,15 +20,17 @@ public class Grammar {
 //        K → nK
 //    }
 
-    private Set<Character> VN = Set.of('S', 'I', 'J', 'K');
-    private Set<Character> VT = Set.of('a', 'b', 'c', 'e', 'n', 'f', 'm');
-    private Character S = 'S';
-    private Map<Character, List<String>> P = Map.of(
-            'S', List.of("cI"),
-            'I', List.of("bJ", "fI", "eK", "e"),
-            'J', List.of("nJ", "cS"),
-            'K', List.of("nK", "m")
-    );
+    private Set<Character> VN;
+    private Set<Character> VT;
+    private Character S;
+    private Map<Character, List<String>> P;
+
+    Grammar(Set<Character> VN, Set<Character> VT, Character S, Map<Character, List<String>> P){
+        this.VN = VN;
+        this.VT = VT;
+        this.S = S;
+        this.P = P;
+    }
 
     public String generateString(){
         StringBuilder word = new StringBuilder(String.valueOf(S));
