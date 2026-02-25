@@ -3,6 +3,7 @@ package lfaf.university.labs2026.automata;
 import lfaf.university.labs2026.helpers.State;
 import lfaf.university.labs2026.grammars.Grammar;
 
+import java.util.Map;
 import java.util.Set;
 
 public abstract class FiniteAutomaton {
@@ -18,8 +19,14 @@ public abstract class FiniteAutomaton {
         this.acceptStates = acceptStates;
     }
 
+    public Set<State> getStates() {return states;}
+    public Set<Character> getAlphabet() {return alphabet;}
+    public State getStartState() {return startState;}
+    public Set<State> getAcceptStates() {return acceptStates;}
+
     public abstract boolean accepts(String input);
     public abstract Grammar toRegularGrammar();
     public abstract boolean isDeterministic();
     public abstract DFA toDFA();
+    public abstract Map<State, Map<Character, Set<State>>> getTransitions();
 }

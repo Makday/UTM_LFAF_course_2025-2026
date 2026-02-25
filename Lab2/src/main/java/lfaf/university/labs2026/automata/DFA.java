@@ -67,4 +67,17 @@ public class DFA extends FiniteAutomaton {
     public DFA toDFA() {
         return this;
     }
+
+    @Override
+    public Map<State, Map<Character, Set<State>>> getTransitions() {
+        Map<State, Map<Character, Set<State>>> result = new HashMap<>();
+        for (Map.Entry<State, Map<Character, State>> entry : transitions.entrySet()) {
+            Map<Character, Set<State>> inner = new HashMap<>();
+            for (Map.Entry<Character, State> t : entry.getValue().entrySet()) {
+                inner.put(t.getKey(), new HashSet<>(Set.of(t.getValue())));
+            }
+            result.put(entry.getKey(), inner);
+        }
+        return result;
+    }
 }

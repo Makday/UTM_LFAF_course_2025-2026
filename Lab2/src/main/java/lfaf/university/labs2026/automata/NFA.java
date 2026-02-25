@@ -122,4 +122,9 @@ public class NFA extends FiniteAutomaton {
         return new DFA(new HashSet<>(dfaTransitions.keySet()), alphabet,
                 State.fromSet(initial), dfaAcceptStates, dfaTransitions);
     }
+
+    @Override
+    public Map<State, Map<Character, Set<State>>> getTransitions(){
+        return transitions;
+    }
 }
