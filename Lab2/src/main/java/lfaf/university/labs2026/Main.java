@@ -15,11 +15,11 @@ import java.util.*;
 
 public class Main {
     static void main() {
-        State q0 = new State("q0");
-        State q1 = new State("q1");
-        State q2 = new State("q2");
-        State q3 = new State("q3");
-        State q4 = new State("q4");
+        State q0 = new State("A");
+        State q1 = new State("B");
+        State q2 = new State("C");
+        State q3 = new State("D");
+        State q4 = new State("E");
 
         Map<State, Map<Character, Set<State>>> delta = new HashMap<>();
         delta.put(q0, new HashMap<>());
@@ -49,7 +49,9 @@ public class Main {
         }
 
         System.out.println("Grammar has type : " + grammar.getGrammarType());
-        System.out.println("Finite Automaton is Deterministic : " + nfa.isDeterministic());
+        System.out.println("Non-deterministic finite automaton is Deterministic : " + nfa.isDeterministic());
+        System.out.println("Deterministic finite automaton is Deterministic : " + dfa.isDeterministic());
+        System.out.println();
 
         for (String word : words) {
             System.out.printf("%s -- Accepted by non-deterministic automaton: %b\n", word, nfa.accepts(word));
