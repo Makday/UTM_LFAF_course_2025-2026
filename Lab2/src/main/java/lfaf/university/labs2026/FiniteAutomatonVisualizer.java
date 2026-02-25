@@ -12,13 +12,15 @@ import java.util.Map;
 import java.util.Set;
 
 public class FiniteAutomatonVisualizer {
+    private final String name;
     private final FiniteAutomaton fa;
     private static final int WIDTH = 150;
     private static final int HEIGHT = 150;
     private static final String fontSize = "fontSize=16;";
 
-    public FiniteAutomatonVisualizer(FiniteAutomaton fa) {
+    public FiniteAutomatonVisualizer(FiniteAutomaton fa,  String name) {
         this.fa = fa;
+        this.name = name;
     }
 
     public void display() {
@@ -56,7 +58,7 @@ public class FiniteAutomatonVisualizer {
         new mxFastOrganicLayout(graph).execute(parent);
 
         mxGraphComponent component = new mxGraphComponent(graph);
-        JFrame frame = new JFrame("Finite Automaton");
+        JFrame frame = new JFrame(name);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(component);
         frame.setSize(800, 600);
