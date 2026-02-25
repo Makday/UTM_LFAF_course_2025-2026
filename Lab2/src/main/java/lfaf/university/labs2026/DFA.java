@@ -26,21 +26,28 @@ public class DFA extends FiniteAutomaton {
 
     @Override
     public Grammar toRegularGrammar() {
-        Set<String> VN = new HashSet<>();
-        for (State s : states) VN.add(s.getName());
+        Map<State, String> stateToLetter = new HashMap<>();
+        char letter = 'A';
+        for (State s : states) {
+            stateToLetter.put(s, String.valueOf(letter++));
+        }
 
+        Set<String> VN = new HashSet<>(stateToLetter.values());
         Set<Character> VT = alphabet;
-
-        String S = startState.getName();
-
+        String S = stateToLetter.get(startState);
         List<Production> P = new ArrayList<>();
 
         for (Map.Entry<State, Map<Character, State>> entry : transitions.entrySet()) {
-            State from = entry.getKey();
+            String from = stateToLetter.get(entry.getKey());
             for (Map.Entry<Character, State> t : entry.getValue().entrySet()) {
                 char terminal = t.getKey();
-                State to = t.getValue();
-                P.add(new Production(from.getName(), terminal + to.getName()));
+                String to = stateToLetter.get(t.getValue());
+
+                if (acceptStates.contains(t.getValue())) {
+                    P.add(new Production(from, String.valueOf(terminal)));
+                } else {
+                    P.add(new Production(from, terminal + to));
+                }
             }
         }
 
