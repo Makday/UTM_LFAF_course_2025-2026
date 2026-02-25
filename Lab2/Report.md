@@ -298,8 +298,8 @@ F = {q4},
 δ(q2,a) = q4.
 ```
 It produces the following NFA and DFA visualizations:
-![NFAgraph](Lab2/images/DFAgraph.png)
-![DFAgraph](Lab2/images/DFAgraph.png)
+![NFAgraph](images/NFAgraph.png)
+![DFAgraph](images/DFAgraph.png)
 
 ## Conclusions / Screenshots / Results
 
@@ -307,6 +307,8 @@ It produces the following NFA and DFA visualizations:
 
 ## References
 
-1. Cojuhari I. "Regular language. Finite automata" - Seminar Slides. https://drive.google.com/file/d/1rBGyzDN5eWMXTNeUxLxmKsf7tyhHt9Jk/view
+1. Cojuhari I. "Regular language. Finite automata" - Seminar Slides.  
+   https://drive.google.com/file/d/1rBGyzDN5eWMXTNeUxLxmKsf7tyhHt9Jk/view
 
-2. Cojuhari I. "FINITE AUTOMATA" - Seminar Slides. https://else.fcim.utm.md/pluginfile.php/64791/mod_resource/content/0/Chapter_2.pdf
+3. Cojuhari I. "FINITE AUTOMATA" - Seminar Slides.  
+   https://else.fcim.utm.md/pluginfile.php/64791/mod_resource/content/0/Chapter_2.pdf
