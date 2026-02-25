@@ -28,8 +28,11 @@ public class DFA extends FiniteAutomaton {
     public Grammar toRegularGrammar() {
         Set<String> VN = new HashSet<>();
         for (State s : states) VN.add(s.getName());
+
         Set<Character> VT = alphabet;
+
         String S = startState.getName();
+
         List<Production> P = new ArrayList<>();
 
         for (Map.Entry<State, Map<Character, State>> entry : transitions.entrySet()) {
@@ -39,10 +42,6 @@ public class DFA extends FiniteAutomaton {
                 State to = t.getValue();
                 P.add(new Production(from.getName(), terminal + to.getName()));
             }
-        }
-
-        for (State accept : acceptStates) {
-            P.add(new Production(accept.getName(), ""));
         }
 
         return new Grammar(VN, VT, S, P);

@@ -39,8 +39,11 @@ public class NFA extends FiniteAutomaton {
     public Grammar toRegularGrammar() {
         Set<String> VN = new HashSet<>();
         for (State s : states) VN.add(s.getName());
+
         Set<Character> VT = alphabet;
+
         String S = startState.getName();
+
         List<Production> P = new ArrayList<>();
 
         for (Map.Entry<State, Map<Character, Set<State>>> entry : transitions.entrySet()) {
@@ -48,14 +51,18 @@ public class NFA extends FiniteAutomaton {
             for (Map.Entry<Character, Set<State>> t : entry.getValue().entrySet()) {
                 char terminal = t.getKey();
                 for (State to : t.getValue()) {
-                    P.add(new Production(from.getName(), terminal + to.getName()));
+                    if(acceptStates.contains(to)){
+                        P.add(new Production(from.getName(), String.valueOf(terminal)));
+                    } else {
+                        P.add(new Production(from.getName(), terminal + to.getName()));
+                    }
                 }
             }
         }
-
-        for (State accept : acceptStates) {
-            P.add(new Production(accept.getName(), ""));
-        }
+//
+//        for (State accept : acceptStates) {
+//            P.add(new Production(accept.getName(), ""));
+//        }
 
         return new Grammar(VN, VT, S, P);
     }
