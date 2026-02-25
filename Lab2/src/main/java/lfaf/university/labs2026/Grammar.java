@@ -7,7 +7,7 @@ public class Grammar {
     private String S;
     private List<Production> P;
 
-    Grammar(Set<String> VN, Set<Character> VT, String S, List<Production> P){
+    Grammar(Set<String> VN, Set<Character> VT, String S, List<Production> P) {
         this.VN = VN;
         this.VT = VT;
         this.S = S;
@@ -104,7 +104,7 @@ public class Grammar {
             String lhs = prod.getLhs();
             String rhs = prod.getRhs();
 
-            if(lhs.length() != 1 || !VN.contains(lhs))
+            if (lhs.length() != 1 || !VN.contains(lhs))
                 return false;
 
             if (rhs.isEmpty()) {
@@ -114,16 +114,16 @@ public class Grammar {
                 continue;
             }
 
-            if(rhs.contains(S))
+            if (rhs.contains(S))
                 sOnRight = true;
 
-            if(rhs.length() == 1){
+            if (rhs.length() == 1) {
                 char symbol = rhs.charAt(0);
                 if (!VT.contains(symbol))
                     return false;
             }
 
-            if(rhs.length() == 2){
+            if (rhs.length() == 2) {
                 char first = rhs.charAt(0);
                 char second = rhs.charAt(1);
 
@@ -136,18 +136,18 @@ public class Grammar {
                 }
             }
 
-            if(rhs.length() > 2){
+            if (rhs.length() > 2) {
                 return false;
             }
         }
 
-        if(sToEpsilon && sOnRight) return false;
+        if (sToEpsilon && sOnRight) return false;
         return !(isLeftLinear && isRightLinear);
     }
 
     private boolean isContextFreeGrammar() {
         for (Production prod : P) {
-            if(prod.getLhs().length() != 1 || !VN.contains(prod.getLhs()) )
+            if (prod.getLhs().length() != 1 || !VN.contains(prod.getLhs()))
                 return false;
         }
         return true;
@@ -162,17 +162,13 @@ public class Grammar {
             String rhs = prod.getRhs();
 
             if (rhs.isEmpty()) {
-                if (!S.equals(lhs))
-                    return false;
+                if (!S.equals(lhs)) return false;
                 sToEpsilon = true;
                 continue;
             }
 
-            if(rhs.contains(S))
-                sOnRight = true;
-
-            if(lhs.length() > rhs.length())
-                return false;
+            if (rhs.contains(S)) sOnRight = true;
+            if (lhs.length() > rhs.length()) return false;
         }
 
         return !(sToEpsilon && sOnRight);
