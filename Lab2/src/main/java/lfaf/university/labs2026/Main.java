@@ -48,6 +48,9 @@ public class Main {
         FiniteAutomaton dfa = nfa.toDFA();
         Grammar grammar = nfa.toRegularGrammar();
 
+        new FiniteAutomatonVisualizer(nfa, "NFA").display();
+        new FiniteAutomatonVisualizer(nfa, "DFA").display();
+
         List<String> words = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             words.add(grammar.generateString());
