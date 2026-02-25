@@ -298,8 +298,8 @@ F = {q4},
 δ(q2,a) = q4.
 ```
 It produces the following NFA and DFA visualizations:
-![NFAgraph](/images/NFAgraph.png)
-![DFAgraph](/images/DFAgraph.png)
+![NFAgraph](Lab2/images/DFAgraph.png)
+![DFAgraph](Lab2/images/DFAgraph.png)
 
 ## Conclusions / Screenshots / Results
 
