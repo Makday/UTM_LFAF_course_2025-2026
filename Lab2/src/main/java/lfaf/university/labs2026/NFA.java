@@ -70,4 +70,49 @@ public class NFA extends FiniteAutomaton {
         }
         return true;
     }
+
+    public DFA toDFA(){
+        Map<State, Map<Character, State>> dfaTransitions = new HashMap<>();
+        Set<State> dfaAcceptStates = new HashSet<>();
+        Set<Set<State>> visited = new HashSet<>();
+        Queue<Set<State>> queue = new LinkedList<>();
+
+        Set<State> initial = Set.of(startState);
+        queue.add(initial);
+        visited.add(initial);
+
+        while(!queue.isEmpty()){
+            Set<State> current = queue.poll();
+            State dfaFrom = State.fromSet(current);
+            dfaTransitions.put(dfaFrom, new HashMap<>());
+
+            for(Character c : alphabet){
+                Set<State> next = new HashSet<>();
+                for (State s : current) {
+                    next.addAll(transitions
+                            .getOrDefault(s, Map.of())
+                            .getOrDefault(c, Set.of()));
+                }
+                if (next.isEmpty()) continue;
+
+                State dfaTo = State.fromSet(next);
+                dfaTransitions.get(dfaFrom).put(c, dfaTo);
+
+                if (!visited.contains(next)) {
+                    visited.add(next);
+                    queue.add(next);
+                }
+            }
+
+            for (State s : current) {
+                if (acceptStates.contains(s)) {
+                    dfaAcceptStates.add(dfaFrom);
+                    break;
+                }
+            }
+        }
+
+        return new DFA(new HashSet<>(dfaTransitions.keySet()), alphabet,
+                State.fromSet(initial), dfaAcceptStates, dfaTransitions);
+    }
 }

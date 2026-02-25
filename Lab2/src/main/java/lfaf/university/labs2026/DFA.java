@@ -52,4 +52,9 @@ public class DFA extends FiniteAutomaton {
     public boolean isDeterministic() {
         return true;
     }
+
+    @Override
+    public DFA toDFA() {
+        return this;
+    }
 }

@@ -18,4 +18,5 @@ public abstract class FiniteAutomaton {
     public abstract boolean accepts(String input);
     public abstract Grammar toRegularGrammar();
     public abstract boolean isDeterministic();
+    public abstract DFA toDFA();
 }
