@@ -59,10 +59,6 @@ public class NFA extends FiniteAutomaton {
                 }
             }
         }
-//
-//        for (State accept : acceptStates) {
-//            P.add(new Production(accept.getName(), ""));
-//        }
 
         return new Grammar(VN, VT, S, P);
     }
