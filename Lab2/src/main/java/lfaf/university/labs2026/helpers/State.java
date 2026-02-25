@@ -1,4 +1,4 @@
-package lfaf.university.labs2026;
+package lfaf.university.labs2026.helpers;
 
 import java.util.Objects;
 import java.util.Set;

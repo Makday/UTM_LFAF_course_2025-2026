@@ -1,4 +1,4 @@
-package lfaf.university.labs2026;
+package lfaf.university.labs2026.helpers;
 
 public class Production {
     private final String lhs;

@@ -1,4 +1,9 @@
-package lfaf.university.labs2026;
+package lfaf.university.labs2026.grammars;
+import lfaf.university.labs2026.automata.FiniteAutomaton;
+import lfaf.university.labs2026.automata.NFA;
+import lfaf.university.labs2026.helpers.Production;
+import lfaf.university.labs2026.helpers.State;
+
 import java.util.*;
 
 public class Grammar {
@@ -7,7 +12,7 @@ public class Grammar {
     private String S;
     private List<Production> P;
 
-    Grammar(Set<String> VN, Set<Character> VT, String S, List<Production> P) {
+    public Grammar(Set<String> VN, Set<Character> VT, String S, List<Production> P) {
         this.VN = VN;
         this.VT = VT;
         this.S = S;

@@ -1,5 +1,10 @@
 package lfaf.university.labs2026;
 
+import lfaf.university.labs2026.automata.FiniteAutomaton;
+import lfaf.university.labs2026.automata.NFA;
+import lfaf.university.labs2026.grammars.Grammar;
+import lfaf.university.labs2026.helpers.State;
+
 import java.util.*;
 
 //        Variant 6

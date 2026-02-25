@@ -1,4 +1,8 @@
-package lfaf.university.labs2026;
+package lfaf.university.labs2026.automata;
+
+import lfaf.university.labs2026.helpers.Production;
+import lfaf.university.labs2026.helpers.State;
+import lfaf.university.labs2026.grammars.Grammar;
 
 import java.util.*;
 
