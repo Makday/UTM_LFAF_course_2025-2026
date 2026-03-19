@@ -79,6 +79,17 @@ public class Lexer {
         return new Token(isFloat ? TokenType.FLOAT : TokenType.INTEGER, value);
     }
 
+    private Token readString() {
+        pos++;
+        int start = pos;
+        while (pos < input.length() && current() != '\'') {
+            pos++;
+        }
+        String value = input.substring(start, pos);
+        if (pos < input.length()) pos++; // skip closing '
+        return new Token(TokenType.STRING, value);
+    }
+
     private void skipWhitespace() {
         while (pos < input.length() && Character.isWhitespace(current())) {
             pos++;
