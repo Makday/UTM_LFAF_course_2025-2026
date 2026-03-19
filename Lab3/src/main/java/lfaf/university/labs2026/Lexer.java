@@ -18,16 +18,15 @@ public class Lexer {
     );
 
     public Lexer(String input) {
-        this.input = input;
+        this.input = input + '\0';
         this.pos = 0;
     }
 
     public List<Token> tokenize() {
         List<Token> tokens = new ArrayList<>();
 
-        while (pos < input.length()) {
+        while (current() != '\0') {
             skipWhitespace();
-            if (pos >= input.length()) break;
 
             char c = current();
 
@@ -48,9 +47,7 @@ public class Lexer {
 
     private Token readWord() {
         int start = pos;
-        while (pos < input.length() && (Character.isLetterOrDigit(current()) || current() == '_')) {
-            pos++;
-        }
+        while ((Character.isLetterOrDigit(current()) || current() == '_')) pos++;
         String word = input.substring(start, pos);
         String upper = word.toUpperCase();
 
@@ -67,12 +64,12 @@ public class Lexer {
         int start = pos;
         boolean isFloat = false;
 
-        while (pos < input.length() && Character.isDigit(current())) pos++;
+        while (Character.isDigit(current())) pos++;
 
-        if (pos < input.length() && current() == '.' && pos + 1 < input.length() && Character.isDigit(input.charAt(pos + 1))) {
+        if (current() == '.' && Character.isDigit(peek())) {
             isFloat = true;
             pos++;
-            while (pos < input.length() && Character.isDigit(current())) pos++;
+            while (Character.isDigit(current())) pos++;
         }
 
         String value = input.substring(start, pos);
@@ -82,24 +79,23 @@ public class Lexer {
     private Token readString() {
         pos++;
         int start = pos;
-        while (pos < input.length() && current() != '\'') {
+        while (current() != '\'' && current() != '\0') {
             pos++;
         }
+        if (current() == '\0') throw new RuntimeException("Unterminated string at position " + start);
         String value = input.substring(start, pos);
-        if (pos < input.length()) pos++; // skip closing '
+        pos++; // skip closing '
         return new Token(TokenType.STRING, value);
     }
 
     private Token readSymbol() {
         char c = current();
         pos++;
-        if (pos < input.length()) {
-            String two = "" + c + current();
-            switch (two) {
-                case "!=": pos++; return new Token(TokenType.NEQ, "!=");
-                case "<=": pos++; return new Token(TokenType.LTE, "<=");
-                case ">=": pos++; return new Token(TokenType.GTE, ">=");
-            }
+        String two = "" + c + current();
+        switch (two) {
+            case "!=": pos++; return new Token(TokenType.NEQ, "!=");
+            case "<=": pos++; return new Token(TokenType.LTE, "<=");
+            case ">=": pos++; return new Token(TokenType.GTE, ">=");
         }
 
         return switch (c) {
@@ -117,9 +113,7 @@ public class Lexer {
     }
 
     private void skipWhitespace() {
-        while (pos < input.length() && Character.isWhitespace(current())) {
-            pos++;
-        }
+        while (Character.isWhitespace(current())) pos++;
     }
 
     private char current() {
@@ -127,7 +121,6 @@ public class Lexer {
     }
 
     private char peek() {
-        if(pos + 1 < input.length()) return input.charAt(pos+1);
-        else return current();
+        return input.charAt(pos+1);
     }
 }
