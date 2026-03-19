@@ -45,7 +45,7 @@ public class Lexer {
         tokens.add(new Token(TokenType.EOF));
         return tokens;
     }
-    
+
     private Token readWord() {
         int start = pos;
         while (pos < input.length() && (Character.isLetterOrDigit(current()) || current() == '_')) {
@@ -63,6 +63,21 @@ public class Lexer {
         return new Token(TokenType.IDENTIFIER, word);
     }
 
+    private Token readNumber() {
+        int start = pos;
+        boolean isFloat = false;
+
+        while (pos < input.length() && Character.isDigit(current())) pos++;
+
+        if (pos < input.length() && current() == '.' && pos + 1 < input.length() && Character.isDigit(input.charAt(pos + 1))) {
+            isFloat = true;
+            pos++;
+            while (pos < input.length() && Character.isDigit(current())) pos++;
+        }
+
+        String value = input.substring(start, pos);
+        return new Token(isFloat ? TokenType.FLOAT : TokenType.INTEGER, value);
+    }
 
     private void skipWhitespace() {
         while (pos < input.length() && Character.isWhitespace(current())) {
