@@ -45,6 +45,23 @@ public class Lexer {
         tokens.add(new Token(TokenType.EOF));
         return tokens;
     }
+    
+    private Token readWord() {
+        int start = pos;
+        while (pos < input.length() && (Character.isLetterOrDigit(current()) || current() == '_')) {
+            pos++;
+        }
+        String word = input.substring(start, pos);
+        String upper = word.toUpperCase();
+
+        if (KEYWORDS.contains(upper)) {
+            if (upper.equals("TRUE") || upper.equals("FALSE")) {
+                return new Token(TokenType.BOOLEAN, upper);
+            }
+            return new Token(TokenType.valueOf(upper));
+        }
+        return new Token(TokenType.IDENTIFIER, word);
+    }
 
 
     private void skipWhitespace() {
