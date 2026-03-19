@@ -90,6 +90,32 @@ public class Lexer {
         return new Token(TokenType.STRING, value);
     }
 
+    private Token readSymbol() {
+        char c = current();
+        pos++;
+        if (pos < input.length()) {
+            String two = "" + c + current();
+            switch (two) {
+                case "!=": pos++; return new Token(TokenType.NEQ, "!=");
+                case "<=": pos++; return new Token(TokenType.LTE, "<=");
+                case ">=": pos++; return new Token(TokenType.GTE, ">=");
+            }
+        }
+
+        return switch (c) {
+            case '='  -> new Token(TokenType.EQ,        "=");
+            case '<'  -> new Token(TokenType.LT,         "<");
+            case '>'  -> new Token(TokenType.GT,         ">");
+            case ','  -> new Token(TokenType.COMMA,      ",");
+            case ';'  -> new Token(TokenType.SEMICOLON,  ";");
+            case '('  -> new Token(TokenType.LPAREN,     "(");
+            case ')'  -> new Token(TokenType.RPAREN,     ")");
+            case '*'  -> new Token(TokenType.ASTERISK,   "*");
+            case '.'  -> new Token(TokenType.DOT,        ".");
+            default   -> throw new RuntimeException("Unexpected character: '" + c + "' at position " + (pos - 1));
+        };
+    }
+
     private void skipWhitespace() {
         while (pos < input.length() && Character.isWhitespace(current())) {
             pos++;
