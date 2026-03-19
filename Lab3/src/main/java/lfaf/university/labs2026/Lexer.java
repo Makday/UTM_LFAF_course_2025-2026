@@ -1,0 +1,126 @@
+package lfaf.university.labs2026;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+public class Lexer {
+    private final String input;
+    private int pos;
+
+    private static final Set<String> KEYWORDS = Set.of(
+            "SELECT", "FROM", "WHERE", "AND", "OR", "NOT",
+            "INSERT", "INTO", "VALUES",
+            "UPDATE", "SET",
+            "DELETE",
+            "ORDER", "BY", "ASC", "DESC",
+            "LIMIT", "TRUE", "FALSE"
+    );
+
+    public Lexer(String input) {
+        this.input = input + '\0';
+        this.pos = 0;
+    }
+
+    public List<Token> tokenize() {
+        List<Token> tokens = new ArrayList<>();
+
+        while (current() != '\0') {
+            skipWhitespace();
+
+            char c = current();
+
+            if (Character.isLetter(c) || c == '_') {
+                tokens.add(readWord());
+            } else if (Character.isDigit(c)) {
+                tokens.add(readNumber());
+            } else if (c == '\'') {
+                tokens.add(readString());
+            } else {
+                tokens.add(readSymbol());
+            }
+        }
+
+        tokens.add(new Token(TokenType.EOF));
+        return tokens;
+    }
+
+    private Token readWord() {
+        int start = pos;
+        while ((Character.isLetterOrDigit(current()) || current() == '_')) pos++;
+        String word = input.substring(start, pos);
+        String upper = word.toUpperCase();
+
+        if (KEYWORDS.contains(upper)) {
+            if (upper.equals("TRUE") || upper.equals("FALSE")) {
+                return new Token(TokenType.BOOLEAN, upper);
+            }
+            return new Token(TokenType.valueOf(upper));
+        }
+        return new Token(TokenType.IDENTIFIER, word);
+    }
+
+    private Token readNumber() {
+        int start = pos;
+        boolean isFloat = false;
+
+        while (Character.isDigit(current())) pos++;
+
+        if (current() == '.' && Character.isDigit(peek())) {
+            isFloat = true;
+            pos++;
+            while (Character.isDigit(current())) pos++;
+        }
+
+        String value = input.substring(start, pos);
+        return new Token(isFloat ? TokenType.FLOAT : TokenType.INTEGER, value);
+    }
+
+    private Token readString() {
+        pos++;
+        int start = pos;
+        while (current() != '\'' && current() != '\0') {
+            pos++;
+        }
+        if (current() == '\0') throw new RuntimeException("Unterminated string at position " + start);
+        String value = input.substring(start, pos);
+        pos++; // skip closing '
+        return new Token(TokenType.STRING, value);
+    }
+
+    private Token readSymbol() {
+        char c = current();
+        pos++;
+        String two = "" + c + current();
+        switch (two) {
+            case "!=": pos++; return new Token(TokenType.NEQ, "!=");
+            case "<=": pos++; return new Token(TokenType.LTE, "<=");
+            case ">=": pos++; return new Token(TokenType.GTE, ">=");
+        }
+
+        return switch (c) {
+            case '='  -> new Token(TokenType.EQ,        "=");
+            case '<'  -> new Token(TokenType.LT,         "<");
+            case '>'  -> new Token(TokenType.GT,         ">");
+            case ','  -> new Token(TokenType.COMMA,      ",");
+            case ';'  -> new Token(TokenType.SEMICOLON,  ";");
+            case '('  -> new Token(TokenType.LPAREN,     "(");
+            case ')'  -> new Token(TokenType.RPAREN,     ")");
+            case '*'  -> new Token(TokenType.ASTERISK,   "*");
+            case '.'  -> new Token(TokenType.DOT,        ".");
+            default   -> throw new RuntimeException("Unexpected character: '" + c + "' at position " + (pos - 1));
+        };
+    }
+
+    private void skipWhitespace() {
+        while (Character.isWhitespace(current())) pos++;
+    }
+
+    private char current() {
+        return input.charAt(pos);
+    }
+
+    private char peek() {
+        return input.charAt(pos+1);
+    }
+}
