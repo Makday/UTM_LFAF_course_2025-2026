@@ -7,6 +7,9 @@ public abstract class RegexNode {
 
     public abstract Set<String> generate();
 
+    @Override
+    public abstract String toString();
+
     protected int limit() {
         return maxQuantity;
     }

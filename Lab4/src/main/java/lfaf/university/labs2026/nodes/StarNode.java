@@ -35,4 +35,9 @@ public class StarNode extends RegexNode {
 
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Star(" + node + ")";
+    }
 }

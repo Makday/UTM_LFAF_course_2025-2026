@@ -23,4 +23,9 @@ public class ConcatNode extends RegexNode {
 
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Concat(" + left + ", " + right + ")";
+    }
 }

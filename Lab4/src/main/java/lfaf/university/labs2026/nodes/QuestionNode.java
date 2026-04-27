@@ -17,4 +17,9 @@ public class QuestionNode extends RegexNode {
         result.addAll(node.generate());
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Question(" + node + ")";
+    }
 }

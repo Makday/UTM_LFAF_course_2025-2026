@@ -6,12 +6,15 @@ import java.util.List;
 import java.util.Set;
 
 public class RegexGenerator {
-    public Set<String> generate(String input) {
+    public RegexNode parse(String input) {
         Lexer lexer = new Lexer();
         List<Token> tokens = lexer.tokenize(input);
         Parser parser = new Parser(tokens);
-        RegexNode ast = parser.parse();
-        return ast.generate();
+        return parser.parse();
+    }
+
+    public Set<String> generate(String input) {
+        return parse(input).generate();
     }
 }
 

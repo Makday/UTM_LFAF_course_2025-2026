@@ -34,4 +34,9 @@ public class PlusNode extends RegexNode {
 
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Plus(" + node + ")";
+    }
 }

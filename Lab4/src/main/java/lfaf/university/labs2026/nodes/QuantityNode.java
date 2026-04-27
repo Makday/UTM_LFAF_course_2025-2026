@@ -33,4 +33,9 @@ public class QuantityNode extends RegexNode {
 
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Quantity(" + node + ", " + count + ")";
+    }
 }

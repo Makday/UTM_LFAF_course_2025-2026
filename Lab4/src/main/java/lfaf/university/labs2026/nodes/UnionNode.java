@@ -19,4 +19,9 @@ public class UnionNode extends RegexNode {
         result.addAll(right.generate());
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Union(" + left + ", " + right + ")";
+    }
 }

@@ -13,4 +13,15 @@ public class CharNode extends RegexNode {
     public Set<String> generate() {
         return Set.of(value);
     }
+
+    @Override
+    public String toString() {
+        return "Char(\"" + escape(value) + "\")";
+    }
+
+    private static String escape(String value) {
+        return value
+                .replace("\\", "\\\\")
+                .replace("\"", "\\\"");
+    }
 }
