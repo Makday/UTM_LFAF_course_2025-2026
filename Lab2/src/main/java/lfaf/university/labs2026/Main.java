@@ -49,7 +49,7 @@ public class Main {
         Grammar grammar = nfa.toRegularGrammar();
 
         new FiniteAutomatonVisualizer(nfa, "NFA").display();
-        new FiniteAutomatonVisualizer(nfa, "DFA").display();
+        new FiniteAutomatonVisualizer(dfa, "DFA").display();
 
         List<String> words = new ArrayList<>();
         for (int i = 0; i < 5; i++) {

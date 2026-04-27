@@ -17,7 +17,7 @@ public enum TokenType {
 
     EQ,         // =
     NEQ,        // !=
-    LT,         //
+    LT,         // <
     GT,         // >
     LTE,        // <=
     GTE,        // >=
