@@ -8,6 +8,7 @@ public class Main {
         System.out.println(generator.generate("(H|i)(J|K)L*N?"));
 
         // Show ASTs
+         System.out.println();
 
          System.out.println(generator.parse("M?N{2}(O|P){3}Q*R+"));
          System.out.println(generator.parse("(X|Y|Z){3}8+(9|0)"));
