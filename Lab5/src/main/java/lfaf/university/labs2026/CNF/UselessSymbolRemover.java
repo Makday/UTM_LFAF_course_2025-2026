@@ -1,8 +1,7 @@
-package org.example.CNF;
+package lfaf.university.labs2026.CNF;
 
-import org.example.grammars.Grammar;
-import org.example.grammars.GrammarAnalyzer;
-import org.example.helpers.Production;
+import lfaf.university.labs2026.grammars.Grammar;
+import lfaf.university.labs2026.helpers.Production;
 
 import java.util.*;
 
@@ -18,7 +17,7 @@ public class UselessSymbolRemover {
      */
     public static Grammar remove(Grammar grammar) {
         // First, find productive symbols
-        Set<String> productive = GrammarAnalyzer.findProductiveSymbols(grammar);
+        Set<String> productive = UselessSymbolRemover.findProductiveSymbols(grammar);
 
         // Remove non-productive symbols from productions
         Set<Production> tempProductions = new HashSet<>();
@@ -49,7 +48,7 @@ public class UselessSymbolRemover {
                                           productiveNonTerminals, tempProductions);
 
         // Then, find reachable symbols
-        Set<String> reachable = GrammarAnalyzer.findReachableSymbols(tempGrammar);
+        Set<String> reachable = UselessSymbolRemover.findReachableSymbols(tempGrammar);
 
         // Filter to keep only reachable symbols
         Set<String> finalNonTerminals = new HashSet<>();
@@ -78,6 +77,71 @@ public class UselessSymbolRemover {
 
         return new Grammar(grammar.getStartSymbol(), grammar.getTerminals(),
                           finalNonTerminals, finalProductions);
+    }
+
+
+    /**
+     * Finds all productive non-terminals (symbols that can derive terminal strings).
+     */
+    public static Set<String> findProductiveSymbols(Grammar grammar) {
+        Set<String> productive = new HashSet<>();
+        boolean changed = true;
+
+        while (changed) {
+            changed = false;
+            for (Production p : grammar.getProductions()) {
+                if (!productive.contains(p.getLhs())) {
+                    // Check if all RHS symbols are terminals or productive non-terminals
+                    if (isProductive(p, productive, grammar)) {
+                        productive.add(p.getLhs());
+                        changed = true;
+                    }
+                }
+            }
+        }
+
+        return productive;
+    }
+
+    /**
+     * Check if a production can derive a terminal string.
+     */
+    private static boolean isProductive(Production p, Set<String> productiveSymbols, Grammar grammar) {
+        for (int i = 0; i < p.rhsLength(); i++) {
+            String symbol = p.getRhsSymbol(i);
+            if (!grammar.isTerminal(symbol) && !productiveSymbols.contains(symbol)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Finds all reachable symbols from the start symbol.
+     */
+    public static Set<String> findReachableSymbols(Grammar grammar) {
+        Set<String> reachable = new HashSet<>();
+        Queue<String> queue = new LinkedList<>();
+
+        reachable.add(grammar.getStartSymbol());
+        queue.add(grammar.getStartSymbol());
+
+        while (!queue.isEmpty()) {
+            String symbol = queue.poll();
+            for (Production p : grammar.getProductionsFor(symbol)) {
+                for (int i = 0; i < p.rhsLength(); i++) {
+                    String rhsSymbol = p.getRhsSymbol(i);
+                    if (!reachable.contains(rhsSymbol)) {
+                        reachable.add(rhsSymbol);
+                        if (grammar.isNonTerminal(rhsSymbol)) {
+                            queue.add(rhsSymbol);
+                        }
+                    }
+                }
+            }
+        }
+
+        return reachable;
     }
 }
 
