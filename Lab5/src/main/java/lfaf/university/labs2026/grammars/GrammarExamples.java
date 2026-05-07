@@ -1,4 +1,6 @@
-package org.example;
+package org.example.grammars;
+
+import org.example.helpers.Production;
 
 import java.util.*;
 
@@ -13,8 +15,8 @@ public class GrammarExamples {
      * S -> aS | bS | a | b | ε
      */
     public static Grammar exampleWithEpsilon() {
-        Set<String> terminals = new HashSet<>(Arrays.asList("a", "b"));
-        Set<String> nonTerminals = new HashSet<>(Arrays.asList("S"));
+        Set<String> terminals = new HashSet<>(List.of("a", "b"));
+        Set<String> nonTerminals = new HashSet<>(List.of("S"));
         Set<Production> productions = new HashSet<>();
 
         productions.add(new Production("S", "a", "S"));
@@ -33,8 +35,8 @@ public class GrammarExamples {
      * B -> c
      */
     public static Grammar exampleWithUnitProductions() {
-        Set<String> terminals = new HashSet<>(Arrays.asList("a", "b", "c"));
-        Set<String> nonTerminals = new HashSet<>(Arrays.asList("S", "A", "B"));
+        Set<String> terminals = new HashSet<>(List.of("a", "b", "c"));
+        Set<String> nonTerminals = new HashSet<>(List.of("S", "A", "B"));
         Set<Production> productions = new HashSet<>();
 
         productions.add(new Production("S", "A"));
@@ -51,8 +53,8 @@ public class GrammarExamples {
      * S -> (S) | SS | ε
      */
     public static Grammar balancedParentheses() {
-        Set<String> terminals = new HashSet<>(Arrays.asList("(", ")"));
-        Set<String> nonTerminals = new HashSet<>(Arrays.asList("S"));
+        Set<String> terminals = new HashSet<>(List.of("(", ")"));
+        Set<String> nonTerminals = new HashSet<>(List.of("S"));
         Set<Production> productions = new HashSet<>();
 
         productions.add(new Production("S", "(", "S", ")"));
@@ -69,8 +71,8 @@ public class GrammarExamples {
      * F -> (E) | id
      */
     public static Grammar arithmeticExpression() {
-        Set<String> terminals = new HashSet<>(Arrays.asList("+", "*", "(", ")", "id"));
-        Set<String> nonTerminals = new HashSet<>(Arrays.asList("E", "T", "F"));
+        Set<String> terminals = new HashSet<>(List.of("+", "*", "(", ")", "id"));
+        Set<String> nonTerminals = new HashSet<>(List.of("E", "T", "F"));
         Set<Production> productions = new HashSet<>();
 
         productions.add(new Production("E", "E", "+", "T"));
@@ -93,8 +95,8 @@ public class GrammarExamples {
      * E -> S | e (non-productive)
      */
     public static Grammar exampleWithUselessSymbols() {
-        Set<String> terminals = new HashSet<>(Arrays.asList("a", "b", "c", "d", "e"));
-        Set<String> nonTerminals = new HashSet<>(Arrays.asList("S", "A", "B", "C", "D", "E"));
+        Set<String> terminals = new HashSet<>(List.of("a", "b", "c", "d", "e"));
+        Set<String> nonTerminals = new HashSet<>(List.of("S", "A", "B", "C", "D", "E"));
         Set<Production> productions = new HashSet<>();
 
         productions.add(new Production("S", "A"));
@@ -115,8 +117,8 @@ public class GrammarExamples {
      * S -> aSb | ab
      */
     public static Grammar anbn() {
-        Set<String> terminals = new HashSet<>(Arrays.asList("a", "b"));
-        Set<String> nonTerminals = new HashSet<>(Arrays.asList("S"));
+        Set<String> terminals = new HashSet<>(List.of("a", "b"));
+        Set<String> nonTerminals = new HashSet<>(List.of("S"));
         Set<Production> productions = new HashSet<>();
 
         productions.add(new Production("S", "a", "S", "b"));
@@ -132,8 +134,8 @@ public class GrammarExamples {
      * B -> bac | ε
      */
     public static Grammar complexGrammar() {
-        Set<String> terminals = new HashSet<>(Arrays.asList("a", "b", "c"));
-        Set<String> nonTerminals = new HashSet<>(Arrays.asList("S", "A", "B"));
+        Set<String> terminals = new HashSet<>(List.of("a", "b", "c"));
+        Set<String> nonTerminals = new HashSet<>(List.of("S", "A", "B"));
         Set<Production> productions = new HashSet<>();
 
         productions.add(new Production("S", "A", "B", "a"));

@@ -1,4 +1,7 @@
-package org.example;
+package org.example.CNF;
+
+import org.example.grammars.Grammar;
+import org.example.helpers.Production;
 
 import java.util.*;
 
@@ -88,7 +91,7 @@ public class CNFTransformer {
                 }
 
                 // Last production
-                finalProductions.add(new Production(currentLhs, rhs.get(rhs.size() - 2), rhs.get(rhs.size() - 1)));
+                finalProductions.add(new Production(currentLhs, rhs.get(rhs.size() - 2), rhs.getLast()));
             }
         }
 

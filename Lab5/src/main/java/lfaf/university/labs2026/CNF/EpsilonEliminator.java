@@ -1,6 +1,14 @@
-package org.example;
+package org.example.CNF;
 
-import java.util.*;
+import org.example.grammars.Grammar;
+import org.example.grammars.GrammarAnalyzer;
+import org.example.helpers.Production;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 
 /**
  * Eliminates epsilon productions (A -> ε) from a grammar.
@@ -40,7 +48,7 @@ public class EpsilonEliminator {
                         // Remove symbols in reverse order to maintain indices
                         for (int i = nullablePositions.size() - 1; i >= 0; i--) {
                             if ((mask & (1 << i)) != 0) {
-                                newRhs.remove((int) nullablePositions.get(i).intValue());
+                                newRhs.remove((int) nullablePositions.get(i));
                             }
                         }
                         if (!newRhs.isEmpty()) {

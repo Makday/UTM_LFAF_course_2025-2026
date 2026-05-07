@@ -1,4 +1,6 @@
-package org.example;
+package org.example.grammars;
+
+import org.example.helpers.Production;
 
 import java.util.*;
 

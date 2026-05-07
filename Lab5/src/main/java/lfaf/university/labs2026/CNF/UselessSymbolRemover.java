@@ -1,4 +1,8 @@
-package org.example;
+package org.example.CNF;
+
+import org.example.grammars.Grammar;
+import org.example.grammars.GrammarAnalyzer;
+import org.example.helpers.Production;
 
 import java.util.*;
 
@@ -8,7 +12,6 @@ import java.util.*;
  * Step 3 in CNF conversion.
  */
 public class UselessSymbolRemover {
-
     /**
      * Removes useless symbols from a grammar.
      * Returns a new grammar with only useful symbols.

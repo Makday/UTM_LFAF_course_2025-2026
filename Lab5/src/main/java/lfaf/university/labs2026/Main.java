@@ -1,16 +1,20 @@
 package org.example;
 
+import org.example.CNF.CNFConverter;
+import org.example.grammars.Grammar;
+import org.example.grammars.GrammarExamples;
+import org.example.helpers.Production;
+
 /**
  * Main class for the Chomsky Normal Form Converter.
  * Tests the CNF converter with various grammar examples.
  */
 public class Main {
     public static void main(String[] args) {
-        IO.println("========================================");
-        IO.println("    Chomsky Normal Form Converter");
-        IO.println("========================================\n");
+        System.out.println("========================================");
+        System.out.println("    Chomsky Normal Form Converter");
+        System.out.println("========================================\n");
 
-        // Test with different example grammars
         testGrammar("Example 1: Grammar with Epsilon Productions", 
                    GrammarExamples.exampleWithEpsilon());
 
@@ -32,26 +36,26 @@ public class Main {
         testGrammar("Example 7: Complex Grammar",
                    GrammarExamples.complexGrammar());
 
-        IO.println("\n========================================");
-        IO.println("    Conversion Complete!");
-        IO.println("========================================");
+        System.out.println("\n========================================");
+        System.out.println("    Conversion Complete!");
+        System.out.println("========================================");
     }
 
     /**
      * Test a grammar by converting it to CNF.
      */
     private static void testGrammar(String title, Grammar grammar) {
-        IO.println("\n" + "=".repeat(50));
-        IO.println(title);
-        IO.println("=".repeat(50));
+        System.out.println("\n" + "=".repeat(50));
+        System.out.println(title);
+        System.out.println("=".repeat(50));
         
         Grammar cnf = CNFConverter.convertToCNF(grammar);
         
-        IO.println("\n" + "-".repeat(50));
-        IO.println("Verification: CNF Grammar has only:");
-        IO.println("  - Productions A -> BC (two non-terminals)");
-        IO.println("  - Productions A -> a (single terminal)");
-        IO.println("-".repeat(50));
+        System.out.println("\n" + "-".repeat(50));
+        System.out.println("Verification: CNF Grammar has only:");
+        System.out.println("  - Productions A -> BC (two non-terminals)");
+        System.out.println("  - Productions A -> a (single terminal)");
+        System.out.println("-".repeat(50));
         
         verifyCNF(cnf);
     }
@@ -67,14 +71,14 @@ public class Main {
             if (!isCNFProduction(p, grammar)) {
                 isValid = false;
                 violationCount++;
-                IO.println("  ✗ VIOLATION: " + p);
+                System.out.println("  ✗ VIOLATION: " + p);
             }
         }
 
         if (isValid) {
-            IO.println("  ✓ All productions are in CNF form!");
+            System.out.println("  ✓ All productions are in CNF form!");
         } else {
-            IO.println("  ✗ Found " + violationCount + " violations!");
+            System.out.println("  ✗ Found " + violationCount + " violations!");
         }
     }
 

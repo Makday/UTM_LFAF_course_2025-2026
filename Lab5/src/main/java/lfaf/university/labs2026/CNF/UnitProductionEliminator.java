@@ -1,4 +1,8 @@
-package org.example;
+package org.example.CNF;
+
+import org.example.grammars.Grammar;
+import org.example.grammars.GrammarAnalyzer;
+import org.example.helpers.Production;
 
 import java.util.*;
 

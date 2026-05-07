@@ -1,4 +1,6 @@
-package org.example;
+package org.example.grammars;
+
+import org.example.helpers.Production;
 
 import java.util.*;
 
@@ -36,13 +38,6 @@ public class Grammar {
     }
 
     /**
-     * Creates a copy of this grammar with potentially different components.
-     */
-    public Grammar copy() {
-        return new Grammar(startSymbol, terminals, nonTerminals, productions);
-    }
-
-    /**
      * Check if a symbol is a terminal.
      */
     public boolean isTerminal(String symbol) {
@@ -69,18 +64,36 @@ public class Grammar {
         return result;
     }
 
+    private List<String> sortedSet(Set<String> set) {
+        List<String> list = new ArrayList<>(set);
+        Collections.sort(list);
+        return list;
+    }
+
+    /**
+     * Helper to sort productions for consistent output.
+     */
+    private List<Production> sortProductions(Set<Production> productions) {
+        List<Production> list = new ArrayList<>(productions);
+        list.sort((p1, p2) -> {
+            int cmp = p1.getLhs().compareTo(p2.getLhs());
+            if (cmp != 0) return cmp;
+            return p1.toString().compareTo(p2.toString());
+        });
+        return list;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Grammar{\n");
-        sb.append("  Start Symbol: ").append(startSymbol).append("\n");
-        sb.append("  Terminals: ").append(terminals).append("\n");
-        sb.append("  Non-Terminals: ").append(nonTerminals).append("\n");
-        sb.append("  Productions:\n");
-        for (Production p : productions) {
-            sb.append("    ").append(p).append("\n");
+        sb.append("\nGrammar:");
+        sb.append("Start Symbol: ").append(getStartSymbol());
+        sb.append("Non-Terminals: ").append(sortedSet(getNonTerminals()));
+        sb.append("Terminals: ").append(sortedSet(getTerminals()));
+        sb.append("Productions:");
+        for (Production p : sortProductions(getProductions())) {
+            sb.append("  ").append(p);
         }
-        sb.append("}");
         return sb.toString();
     }
 }
