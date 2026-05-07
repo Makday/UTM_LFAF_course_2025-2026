@@ -1,4 +1,4 @@
-package org.example.helpers;
+package lfaf.university.labs2026.helpers;
 
 import java.util.*;
 
