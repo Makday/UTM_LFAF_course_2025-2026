@@ -1,7 +1,7 @@
-package org.example.CNF;
+package lfaf.university.labs2026.CNF;
 
-import org.example.grammars.Grammar;
-import org.example.helpers.Production;
+import lfaf.university.labs2026.grammars.Grammar;
+import lfaf.university.labs2026.helpers.Production;
 
 import java.util.*;
 
@@ -67,31 +67,38 @@ public class CNFTransformer {
 
         afterTerminalReplacement.addAll(newProductionsToAdd);
 
-        afterTerminalReplacement.addAll(newProductionsToAdd);
-
         productions = afterTerminalReplacement;
 
         // Step 2: Convert productions with 3+ non-terminals into binary form
         Set<Production> finalProductions = new HashSet<>();
+        Map<List<String>, String> binaryPairToVariable = new HashMap<>();
 
         for (Production p : productions) {
             if (p.rhsLength() <= 2) {
-                finalProductions.add(p);
+                addProductionIfAbsent(finalProductions, p);
             } else {
-                // Convert A -> B1 B2 B3 ... Bn into binary form
+                // Convert A -> B1 B2 B3 ... Bn into binary form while reusing
+                // already created variables for the same binary pair.
                 List<String> rhs = p.getRhs();
-                String currentLhs = p.getLhs();
+                String chainedTail = createOrReuseBinaryPair(
+                        rhs.get(rhs.size() - 2),
+                        rhs.get(rhs.size() - 1),
+                        nonTerminals,
+                        finalProductions,
+                        binaryPairToVariable
+                );
 
-                // Create chain: A -> B1 X1, X1 -> B2 X2, X2 -> B3 X3, ..., Xn-2 -> Bn-1 Bn
-                for (int i = 0; i < rhs.size() - 2; i++) {
-                    String newVar = generateNewVariable(nonTerminals);
-                    nonTerminals.add(newVar);
-                    finalProductions.add(new Production(currentLhs, rhs.get(i), newVar));
-                    currentLhs = newVar;
+                for (int i = rhs.size() - 3; i >= 1; i--) {
+                    chainedTail = createOrReuseBinaryPair(
+                            rhs.get(i),
+                            chainedTail,
+                            nonTerminals,
+                            finalProductions,
+                            binaryPairToVariable
+                    );
                 }
 
-                // Last production
-                finalProductions.add(new Production(currentLhs, rhs.get(rhs.size() - 2), rhs.getLast()));
+                addProductionIfAbsent(finalProductions, new Production(p.getLhs(), rhs.get(0), chainedTail));
             }
         }
 
@@ -107,6 +114,27 @@ public class CNFTransformer {
             newVar = "X" + (newVarCounter++);
         } while (existingVariables.contains(newVar));
         return newVar;
+    }
+
+    private static String createOrReuseBinaryPair(String left, String right,
+                                                   Set<String> nonTerminals,
+                                                   Set<Production> targetProductions,
+                                                   Map<List<String>, String> binaryPairToVariable) {
+        List<String> key = List.of(left, right);
+        String existingVariable = binaryPairToVariable.get(key);
+        if (existingVariable != null) {
+            return existingVariable;
+        }
+
+        String newVar = generateNewVariable(nonTerminals);
+        nonTerminals.add(newVar);
+        binaryPairToVariable.put(key, newVar);
+        addProductionIfAbsent(targetProductions, new Production(newVar, left, right));
+        return newVar;
+    }
+
+    private static void addProductionIfAbsent(Set<Production> targetProductions, Production production) {
+        targetProductions.add(production);
     }
 }
 

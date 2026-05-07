@@ -1,8 +1,7 @@
-package org.example.CNF;
+package lfaf.university.labs2026.CNF;
 
-import org.example.grammars.Grammar;
-import org.example.grammars.GrammarAnalyzer;
-import org.example.helpers.Production;
+import lfaf.university.labs2026.grammars.Grammar;
+import lfaf.university.labs2026.helpers.Production;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,7 +21,7 @@ public class EpsilonEliminator {
      */
     public static Grammar eliminate(Grammar grammar) {
         // Find all nullable non-terminals
-        Set<String> nullable = GrammarAnalyzer.findNullableSymbols(grammar);
+        Set<String> nullable = findNullableSymbols(grammar);
 
         // If start symbol is nullable, we need to handle it specially
         boolean startIsNullable = nullable.contains(grammar.getStartSymbol());
@@ -84,6 +83,45 @@ public class EpsilonEliminator {
         }
 
         return new Grammar(startSymbol, grammar.getTerminals(), nonTerminals, newProductions);
+    }
+
+    /**
+     * Finds all nullable non-terminals (symbols that can derive epsilon).
+     */
+    private static Set<String> findNullableSymbols(Grammar grammar) {
+        Set<String> nullable = new HashSet<>();
+        boolean changed = true;
+
+        while (changed) {
+            changed = false;
+            for (Production p : grammar.getProductions()) {
+                if (!nullable.contains(p.getLhs())) {
+                    // Check if all RHS symbols are nullable
+                    if (isNullable(p, nullable)) {
+                        nullable.add(p.getLhs());
+                        changed = true;
+                    }
+                }
+            }
+        }
+
+        return nullable;
+    }
+
+    /**
+     * Check if a production can derive epsilon (all RHS symbols are nullable).
+     */
+    private static boolean isNullable(Production p, Set<String> nullableSymbols) {
+        if (p.rhsLength() == 0) {
+            return true; // Epsilon production
+        }
+        for (int i = 0; i < p.rhsLength(); i++) {
+            String symbol = p.getRhsSymbol(i);
+            if (!nullableSymbols.contains(symbol)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
 
