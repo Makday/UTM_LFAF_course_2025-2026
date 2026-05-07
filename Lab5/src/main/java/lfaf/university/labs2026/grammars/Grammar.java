@@ -1,6 +1,6 @@
-package org.example.grammars;
+package lfaf.university.labs2026.grammars;
 
-import org.example.helpers.Production;
+import lfaf.university.labs2026.helpers.Production;
 
 import java.util.*;
 
@@ -75,11 +75,7 @@ public class Grammar {
      */
     private List<Production> sortProductions(Set<Production> productions) {
         List<Production> list = new ArrayList<>(productions);
-        list.sort((p1, p2) -> {
-            int cmp = p1.getLhs().compareTo(p2.getLhs());
-            if (cmp != 0) return cmp;
-            return p1.toString().compareTo(p2.toString());
-        });
+        list.sort(Comparator.comparing(Production::getLhs).thenComparing(Production::toString));
         return list;
     }
 
@@ -87,13 +83,50 @@ public class Grammar {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("\nGrammar:");
-        sb.append("Start Symbol: ").append(getStartSymbol());
-        sb.append("Non-Terminals: ").append(sortedSet(getNonTerminals()));
-        sb.append("Terminals: ").append(sortedSet(getTerminals()));
-        sb.append("Productions:");
-        for (Production p : sortProductions(getProductions())) {
-            sb.append("  ").append(p);
+        sb.append("\nStart Symbol: ").append(getStartSymbol());
+        sb.append("\nNon-Terminals: ").append(sortedSet(getNonTerminals()));
+        sb.append("\nTerminals: ").append(sortedSet(getTerminals()));
+        sb.append("\nProductions:\n");
+
+        Map<String, List<String>> grouped = new LinkedHashMap<>();
+
+        // Ensure a consistent order: start symbol first, then other non-terminals
+        grouped.put(startSymbol, new ArrayList<>());
+        for (String nt : nonTerminals) {
+            if (!nt.equals(startSymbol)) {
+                grouped.put(nt, new ArrayList<>());
+            }
         }
+
+        // Populate the map
+        for (Production p : productions) {
+            String lhs = p.getLhs();
+            List<String> rhsSymbols = p.getRhs();
+            // Convert the list of symbols to a string (space-separated, or "ε" if empty)
+            String rhsStr;
+            if (rhsSymbols.isEmpty()) {
+                rhsStr = "ε";                     // epsilon
+            } else {
+                rhsStr = String.join(" ", rhsSymbols);
+            }
+            grouped.get(lhs).add(rhsStr);
+        }
+
+        for (Map.Entry<String, List<String>> entry : grouped.entrySet()) {
+            String lhs = entry.getKey();
+            List<String> rhss = entry.getValue();
+            if (rhss.isEmpty()) continue;   // skip non-terminals that are never used on LHS
+
+            sb.append(lhs).append(" → ");
+            sb.append(String.join(" | ", rhss));
+            sb.append("\n");
+        }
+
+        // Remove the trailing newline if you prefer
+        if (sb.length() > 0 && sb.charAt(sb.length() - 1) == '\n') {
+            sb.setLength(sb.length() - 1);
+        }
+
         return sb.toString();
     }
 }
