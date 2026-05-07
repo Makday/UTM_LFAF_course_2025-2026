@@ -65,3 +65,4 @@ This lab helped me understand how a context-free grammar can be normalized into 
 ## References
 
 1. Wikipedia, "Chomsky Normal Form". https://en.wikipedia.org/wiki/Chomsky_normal_form
+2. GeeksForGeeks, "Chomsky Normal Form". https://www.geeksforgeeks.org/theory-of-computation/converting-context-free-grammar-chomsky-normal-form/
